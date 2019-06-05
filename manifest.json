@@ -1,0 +1,39 @@
+{
+  "vendor": "vtex",
+  "name": "bluecore",
+  "version": "1.0.0",
+  "title": "Bluecore",
+  "description": "Bluecore",
+  "builders": {
+    "react": "3.x",
+    "store": "0.x",
+    "pixel": "0.x"
+  },
+  "mustUpdateAt": "2019-10-01",
+  "billingOptions": {
+    "termsURL": "",
+    "support": {
+      "url": "https://support.vtex.com/hc/requests"
+    },
+    "free": true
+  },
+  "dependencies": {
+    "vtex.pixel-interfaces": "1.x"
+  },
+  "settingsSchema": {
+    "title": "Bluecore",
+    "type": "object",
+    "properties": {
+      "siteId": {
+        "title": "Site ID",
+        "description": "Enter your site ID",
+        "type": "string"
+      }
+    }
+  },
+  "scripts": {
+    "prereleasy": "bash lint.sh",
+    "postreleasy": "vtex publish --verbose"
+  },
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}

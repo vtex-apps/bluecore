@@ -1,0 +1,11 @@
+<script>
+  (function() {
+    var siteId = "{{settings.siteId}}";
+    if (!siteId) {
+      console.error('Warning: No Bluecore Site ID is defined. Please configure it in the apps admin.');
+    } else {
+      window.__bluecore_site_id = siteId;
+      var triggermail=triggermail||[];triggermail.load=function(a){var b=document.createElement("script");b.type="text/javascript";b.async=!0;b.src="https://api.bluecore.com/triggermail.js/"+a+".js";a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)};triggermail.load(siteId);window.triggermail=triggermail;
+    }
+  })()
+</script>
