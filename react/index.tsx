@@ -1,3 +1,4 @@
+import { canUseDOM } from 'vtex.render-runtime'
 
 export interface Order {
   visitorContactInfo: string[]
@@ -27,7 +28,7 @@ function addPixelImage(order: Order) {
   document.body.appendChild(img)
 }
 
-window.addEventListener('message', e => {
+function handleMessages(e: any) {
   switch (e.data.eventName) {
     case 'vtex:orderPlaced': {
       const order = e.data as Order
@@ -37,4 +38,8 @@ window.addEventListener('message', e => {
     default:
       break
   }
-})
+}
+
+if (canUseDOM) {
+  window.addEventListener('message', handleMessages)
+}
