@@ -7,5 +7,18 @@
       window.__bluecore_site_id = siteId;
       var triggermail=triggermail||[];triggermail.load=function(a){var b=document.createElement("script");b.type="text/javascript";b.async=!0;b.src="https://api.bluecore.com/triggermail.js/"+a+".js";a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)};triggermail.load(siteId);window.triggermail=triggermail;
     }
+
+    window.bluecore = window.bluecore || [], bluecore.load = function(e, o) {
+      bluecore.env = o || "prod", bluecore.namespace = e, window.bluecore.track = function() {
+          bluecore.push(Array.prototype.slice.call(arguments, 0))
+      };
+      var t = document.createElement("script");
+      t.type = "text/javascript", t.async = !0, t.src = "https://api.bluecore.com/triggermail.js/_semantic.js";
+      var c = document.getElementsByTagName("script")[0];
+      c.parentNode.insertBefore(t, c)
+    };
+    var workspace = "{{ workspace }}";
+    var env = workspace === "master" ? "prod" : "dev";
+    bluecore.load(siteId, env);
   })()
 </script>

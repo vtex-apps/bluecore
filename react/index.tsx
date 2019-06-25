@@ -1,4 +1,5 @@
 import { canUseDOM } from 'vtex.render-runtime'
+import { PixelMessage, AddToCartData, RemoveFromCartData } from './typings/events'
 
 export interface Order {
   visitorContactInfo: string[]
@@ -11,9 +12,9 @@ interface ProductOrder {
   sku: string,
 }
 
-const token = window.__bluecore_site_id
-
 function addPixelImage(order: Order) {
+  const token = window.__bluecore_site_id
+
   const email = order.visitorContactInfo[0]
   const total = order.transactionTotal
   const orderId = order.transactionId
@@ -28,12 +29,34 @@ function addPixelImage(order: Order) {
   document.body.appendChild(img)
 }
 
-function handleMessages(e: any) {
-  switch (e.data.eventName) {
+function handleMessages(e: PixelMessage) {
+  console.log('pixel', e.data);
+
+  switch (e.data.event) {
     case 'vtex:orderPlaced': {
       const order = e.data as Order
       addPixelImage(order)
-      break
+      return
+    }
+    case 'vtex:addToCart': {
+      const data = e.data as AddToCartData
+      const id = data.items[0].sku.skuId
+      if (!id) {
+        return
+      }
+
+      window.bluecore.track('add_to_cart', { id })
+      return
+    }
+    case 'vtex:removeFromCart': {
+      const data = e.data as RemoveFromCartData
+      const id = data.items[0].sku.skuId
+      if (!id) {
+        return
+      }
+
+      window.bluecore.track('remove_from_cart', { id })
+      return
     }
     default:
       break
