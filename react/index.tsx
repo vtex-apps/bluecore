@@ -8,16 +8,16 @@ export interface Order {
 }
 
 interface ProductOrder {
-  sku: string,
+  productRefId: string,
 }
 
-const token = window.__bluecore_site_id
-
 function addPixelImage(order: Order) {
+  const token = window.__bluecore_site_id
+
   const email = order.visitorContactInfo[0]
   const total = order.transactionTotal
   const orderId = order.transactionId
-  const productsIds = order.transactionProducts.map((p: { sku: string }) => p.sku).join(',')
+  const productsIds = order.transactionProducts.map(({ productRefId }) => productRefId).join(',')
 
   const img = document.createElement('img')
   const url = `https://www.bluecore.com/api/track/purchase_pixel?token=${token}&email=${email}&total=${total}&order_id=${orderId}&product_ids=${productsIds}`
