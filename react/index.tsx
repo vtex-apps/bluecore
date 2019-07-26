@@ -1,4 +1,5 @@
 import { canUseDOM } from 'vtex.render-runtime'
+import { PixelMessage } from './typings/events'
 
 export interface Order {
   visitorContactInfo: string[]
@@ -28,11 +29,41 @@ function addPixelImage(order: Order) {
   document.body.appendChild(img)
 }
 
-function handleMessages(e: any) {
+function handleMessages(e: PixelMessage) {
   switch (e.data.eventName) {
     case 'vtex:orderPlaced': {
       const order = e.data as Order
       addPixelImage(order)
+      break
+    }
+    case "vtex:addToCart": {
+      const { items } = e.data
+
+      items.forEach(item => {
+        try {
+          window.triggermail.Partner.dataReady({
+            event_type: "add_to_cart",
+            id: item.productRefId
+          })
+        } catch (e) {
+          console.error(e)
+        }
+      })
+      return
+    }
+    case "vtex:removeFromCart": {
+      const { items } = e.data
+
+      items.forEach(item => {
+        try {
+          window.triggermail.Partner.dataReady({
+            event_type: "remove_from_cart",
+            id: item.productRefId
+          });
+        } catch (e) {
+          console.error(e)
+        }
+      })
       break
     }
     default:
